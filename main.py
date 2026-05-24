@@ -11,18 +11,20 @@ BANNER = """
 ██║╚██╔╝██║╚════██║██║   ██║
 ██║ ╚═╝ ██║███████║╚██████╔╝
 ╚═╝     ╚═╝╚══════╝ ╚═════╝ 
-        MY EAGLE
+        MY EAGLE (DEBUG MODE)
 """
 
 async def fetch(session, url, results, errors, latencies):
     start = time.time()
     try:
         async with session.post(url, data="hello, world!") as resp:
+            print(f"DEBUG: Response status: {resp.status}")
             await resp.read()
             latency = (time.time() - start) * 1000  # ms
             latencies.append(latency)
             results.append(resp.status)
     except Exception as e:
+        print(f"DEBUG: Error: {e}")
         errors.append(str(e))
 
 async def benchmark(url, concurrency, duration):
@@ -44,7 +46,7 @@ def print_results(results, errors, latencies):
     print(f"Non-2xx responses: {len([r for r in results if r < 200 or r >= 300])}")
     print(f"Errors: {len(errors)}")
     print(f"Latency (ms):")
-    print(f" 50%: {statistics.median(latencies)}")
+    print(f" 50%: {statistics.median(latencies) if latencies else 0}")
     print(f" 95%: {sorted(latencies)[int(len(latencies)*0.95)] if latencies else 0}")
     print(f" 99%: {sorted(latencies)[int(len(latencies)*0.99)] if latencies else 0}")
     print(f" Avg: {statistics.mean(latencies) if latencies else 0}")
