@@ -4,20 +4,16 @@ import argparse
 from aiohttp import ClientSession, ClientTimeout
 import statistics
 import random
-import os
 
 # Banner MY EAGLE
-os.system('color 3')  # Warna cyan di terminal Windows
 print("""
-\033[96m
- ___  ____   __  _____  ___  _____  _      _____ 
+___  ____   __  _____  ___  _____  _      _____ 
 |  \/  \ \ / / |  ___|/ _ \|  __ \| |    |  ___|
 | .  . |\ V /  | |__ / /_\ \ |  \/| |    | |__  
 | |\/| | \ /   |  __||  _  | | __ | |    |  __| 
 | |  | | | |   | |___| | | | |_\ \| |____| |___ 
 \_|  |_/ \_/   \____/\_| |_/\____/\_____/\____/ 
-                                                
-\033[0m
+================================================                                               
 """)
 
 async def fetch(session, url, results, errors, latencies):
