@@ -5,15 +5,12 @@ from aiohttp import ClientSession, ClientTimeout
 import statistics
 import random
 import warnings
-warnings.filterwarnings("ignore")
 
 BANNER = """"
- 
    \  | \ \   /      ____|     \      ___|  |      ____| 
   |\/ |  \   /       __|      _ \    |      |      __|   
   |   |     |        |       ___ \   |   |  |      |     
  _|  _|    _|       _____| _/    _\ \____| _____| _____| 
-                                                         
  """
 
 async def fetch(session, url, results, errors, latencies):
