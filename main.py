@@ -11,20 +11,20 @@ BANNER = """
 ██║╚██╔╝██║╚════██║██║   ██║
 ██║ ╚═╝ ██║███████║╚██████╔╝
 ╚═╝     ╚═╝╚══════╝ ╚═════╝ 
-        MY EAGLE (DEBUG MODE)
+        MY EAGLE
 """
 
 async def fetch(session, url, results, errors, latencies):
     start = time.time()
     try:
         async with session.post(url, data="hello, world!") as resp:
-            print(f"DEBUG: Response status: {resp.status}")
+            print(f"SEND THREADS: {url} -> Response status: {resp.status}")
             await resp.read()
             latency = (time.time() - start) * 1000  # ms
             latencies.append(latency)
             results.append(resp.status)
     except Exception as e:
-        print(f"DEBUG: Error: {e}")
+        print(f"SEND THREADS: {url} -> Error: {e}")
         errors.append(str(e))
 
 async def benchmark(url, concurrency, duration):
