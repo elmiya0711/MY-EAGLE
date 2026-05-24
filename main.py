@@ -27,12 +27,12 @@ async def fetch(session, url, results, errors, latencies):
         print(f"SEND THREADS: {url} Error: {e}")
         errors.append(str(e))
 
-async def benchmark(url, concurrency, duration):
+async def benchmark(url, concurrency, duration, proxy):
     timeout = ClientTimeout(total=10)
     results = []
     errors = []
     latencies = []
-    async with ClientSession(timeout=timeout) as session:
+    async with ClientSession(timeout=timeout, proxy=proxy) as session:
         tasks = []
         start_time = time.time()
         while time.time() - start_time < duration:
@@ -57,8 +57,9 @@ async def main():
     parser.add_argument("--url", required=True)
     parser.add_argument("--concurrency", type=int, default=10)
     parser.add_argument("--duration", type=int, default=30)
+    parser.add_argument("--proxy", help="contoh: http://proxy.example.com:8080")
     args = parser.parse_args()
-    results, errors, latencies = await benchmark(args.url, args.concurrency, args.duration)
+    results, errors, latencies = await benchmark(args.url, args.concurrency, args.duration, args.proxy)
     print_results(results, errors, latencies)
 
 if __name__ == "__main__":
