@@ -4,14 +4,6 @@ import argparse
 from aiohttp import ClientSession, ClientTimeout
 import statistics
 import random
-import warnings
-
-BANNER ="""""
-   \  | \ \   /      ____|     \      ___|  |      ____| 
-  |\/ |  \   /       __|      _ \    |      |      __|   
-  |   |     |        |       ___ \   |   |  |      |     
- _|  _|    _|       _____| _/    _\ \____| _____| _____| 
- """
 
 async def fetch(session, url, results, errors, latencies):
     start = time.time()
@@ -52,7 +44,6 @@ def print_results(results, errors, latencies):
     print(f" Avg: {statistics.mean(latencies) if latencies else 0}")
 
 async def main():
-    print(BANNER)
     parser = argparse.ArgumentParser()
     parser.add_argument("--url", required=True)
     parser.add_argument("--concurrency", type=int, default=10)
