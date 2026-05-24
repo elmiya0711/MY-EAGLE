@@ -3,6 +3,7 @@ import time
 import argparse
 from aiohttp import ClientSession, ClientTimeout
 import statistics
+import random
 
 BANNER = """
 ███╗   ███╗███████╗ ██████╗ 
@@ -27,15 +28,17 @@ async def fetch(session, url, results, errors, latencies):
         print(f"SEND THREADS: {url} Error: {e}")
         errors.append(str(e))
 
-async def benchmark(url, concurrency, duration, proxy):
+async def benchmark(url, concurrency, duration, proxies, user_agent):
     timeout = ClientTimeout(total=10)
     results = []
     errors = []
     latencies = []
-    async with ClientSession(timeout=timeout, proxy=proxy) as session:
+    headers = {"User-Agent": user_agent}
+    async with ClientSession(timeout=timeout, headers=headers) as session:
         tasks = []
         start_time = time.time()
         while time.time() - start_time < duration:
+            proxy = random.choice(proxies)
             tasks = [fetch(session, url, results, errors, latencies) for _ in range(concurrency)]
             await asyncio.gather(*tasks)
         print("\nDone!")
@@ -57,9 +60,12 @@ async def main():
     parser.add_argument("--url", required=True)
     parser.add_argument("--concurrency", type=int, default=10)
     parser.add_argument("--duration", type=int, default=30)
-    parser.add_argument("--proxy", help="contoh: http://proxy.example.com:8080")
+    parser.add_argument("--proxy-file", default="http.txt")
+    parser.add_argument("--user-agent", default="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36")
     args = parser.parse_args()
-    results, errors, latencies = await benchmark(args.url, args.concurrency, args.duration, args.proxy)
+    with open(args.proxy_file, "r") as f:
+        proxies = [line.strip() for line in f.readlines()]
+    results, errors, latencies = await benchmark(args.url, args.concurrency, args.duration, proxies, args.user_agent)
     print_results(results, errors, latencies)
 
 if __name__ == "__main__":
