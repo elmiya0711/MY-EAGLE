@@ -3,7 +3,6 @@ import time
 import argparse
 from aiohttp import ClientSession, ClientTimeout
 import statistics
-from hdrhistogram import HdrHistogram
 
 BANNER = """
 ███╗   ███╗███████╗ ██████╗ 
@@ -21,7 +20,7 @@ async def fetch(session, url, results, errors, latencies):
         async with session.post(url, data="hello, world!") as resp:
             await resp.read()
             latency = (time.time() - start) * 1000  # ms
-            latencies.record_value(latency)
+            latencies.append(latency)
             results.append(resp.status)
     except Exception as e:
         errors.append(str(e))
@@ -30,7 +29,7 @@ async def benchmark(url, concurrency, duration):
     timeout = ClientTimeout(total=10)
     results = []
     errors = []
-    latencies = HdrHistogram(1, 10000, 3)
+    latencies = []
     async with ClientSession(timeout=timeout) as session:
         tasks = []
         start_time = time.time()
@@ -45,10 +44,10 @@ def print_results(results, errors, latencies):
     print(f"Non-2xx responses: {len([r for r in results if r < 200 or r >= 300])}")
     print(f"Errors: {len(errors)}")
     print(f"Latency (ms):")
-    print(f"  50%: {latencies.get_value_at_percentile(50)}")
-    print(f"  95%: {latencies.get_value_at_percentile(95)}")
-    print(f"  99%: {latencies.get_value_at_percentile(99)}")
-    print(f"  Avg: {latencies.get_mean_value()}")
+    print(f" 50%: {statistics.median(latencies)}")
+    print(f" 95%: {sorted(latencies)[int(len(latencies)*0.95)] if latencies else 0}")
+    print(f" 99%: {sorted(latencies)[int(len(latencies)*0.99)] if latencies else 0}")
+    print(f" Avg: {statistics.mean(latencies) if latencies else 0}")
 
 async def main():
     print(BANNER)
