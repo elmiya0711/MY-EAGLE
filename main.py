@@ -11,7 +11,7 @@ BANNER ="""""
   |\/ |  \   /       __|      _ \    |      |      __|   
   |   |     |        |       ___ \   |   |  |      |     
  _|  _|    _|       _____| _/    _\ \____| _____| _____| 
- """"
+ """
 
 async def fetch(session, url, results, errors, latencies):
     start = time.time()
