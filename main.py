@@ -6,6 +6,7 @@ import statistics
 import random
 
 # Banner MY EAGLE
+print("\033[95m")
 print(r"""
 ___  ____   __  _____  ___  _____  _      _____ 
 |  \/  \ \ / / |  ___|/ _ \|  __ \| |    |  ___|
@@ -15,7 +16,7 @@ ___  ____   __  _____  ___  _____  _      _____
 \_|  |_/ \_/   \____/\_| |_/\____/\_____/\____/ 
 ================================================                                               
 """)
-
+print("\033[0m")
 async def fetch(session, url, results, errors, latencies):
     start = time.time()
     try:
