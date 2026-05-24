@@ -4,16 +4,17 @@ import argparse
 from aiohttp import ClientSession, ClientTimeout
 import statistics
 import random
+import warnings
+warnings.filterwarnings("ignore")
 
-BANNER = """
- _______ _     _    _______ _______ _______ _       _______ 
+BANNER = """"
+_______ _     _    _______ _______ _______ _       _______ 
 (_______) |   | |  (_______|_______|_______|_)     (_______)
  _  _  _| |___| |   _____   _______ _   ___ _       _____   
 | ||_|| |_____  |  |  ___) |  ___  | | (_  | |     |  ___)  
 | |   | |_____| |  | |_____| |   | | |___) | |_____| |_____ 
 |_|   |_(_______|  |_______)_|   |_|\_____/|_______)_______)
-                                                            
-"""
+                                                            """"
 
 async def fetch(session, url, results, errors, latencies):
     start = time.time()
