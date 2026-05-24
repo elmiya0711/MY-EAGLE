@@ -6,7 +6,7 @@ import statistics
 import random
 
 # Banner MY EAGLE
-print("""
+print(r"""
 ___  ____   __  _____  ___  _____  _      _____ 
 |  \/  \ \ / / |  ___|/ _ \|  __ \| |    |  ___|
 | .  . |\ V /  | |__ / /_\ \ |  \/| |    | |__  
