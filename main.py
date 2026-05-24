@@ -4,6 +4,21 @@ import argparse
 from aiohttp import ClientSession, ClientTimeout
 import statistics
 import random
+import os
+
+# Banner MY EAGLE
+os.system('color 3')  # Warna cyan di terminal Windows
+print("""
+\033[96m
+ ___  ____   __  _____  ___  _____  _      _____ 
+|  \/  \ \ / / |  ___|/ _ \|  __ \| |    |  ___|
+| .  . |\ V /  | |__ / /_\ \ |  \/| |    | |__  
+| |\/| | \ /   |  __||  _  | | __ | |    |  __| 
+| |  | | | |   | |___| | | | |_\ \| |____| |___ 
+\_|  |_/ \_/   \____/\_| |_/\____/\_____/\____/ 
+                                                
+\033[0m
+""")
 
 async def fetch(session, url, results, errors, latencies):
     start = time.time()
@@ -11,7 +26,7 @@ async def fetch(session, url, results, errors, latencies):
         async with session.post(url, data="hello, world!") as resp:
             print(f"SEND THREADS: {url} STATUS: {resp.status}")
             await resp.read()
-            latency = (time.time() - start) * 1000  # ms
+            latency = (time.time() - start) * 1000 # ms
             latencies.append(latency)
             results.append(resp.status)
     except Exception as e:
